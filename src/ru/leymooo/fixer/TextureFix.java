@@ -1,9 +1,5 @@
 package ru.leymooo.fixer;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -16,10 +12,14 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+
 @SuppressWarnings("deprecation")
 public class TextureFix implements Listener {
 
-    private HashMap<Material,Integer> limit = new HashMap<Material, Integer>();
+    private HashMap<Material, Integer> limit = new HashMap<Material, Integer>();
     private HashSet<Material> ignore = new HashSet<Material>();
     private Main plugin;
 
@@ -126,7 +126,7 @@ public class TextureFix implements Listener {
         if (e.getWhoClicked().getType() == EntityType.PLAYER && isInvalide(it)) {
             e.setCancelled(true);
             e.getWhoClicked().getInventory().remove(it);
-            ((Player)e.getWhoClicked()).updateInventory();
+            ((Player) e.getWhoClicked()).updateInventory();
         }
     }
 
@@ -140,7 +140,7 @@ public class TextureFix implements Listener {
     }
 
     private boolean isInvalide(ItemStack it) {
-        if (it != null && it.getType()!=Material.AIR && it.getDurability() != 0 && !plugin.isArtMapItem(it)) {
+        if (it != null && it.getType() != Material.AIR && it.getDurability() != 0) {
             if (limit.containsKey(it.getType())) {
                 return (it.getDurability() < 0 || (it.getDurability() > limit.get(it.getType())));
             }

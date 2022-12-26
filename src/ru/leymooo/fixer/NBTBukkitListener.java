@@ -13,13 +13,11 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.filoghost.chestcommands.internal.MenuInventoryHolder;
-
 public class NBTBukkitListener implements Listener {
-    
+
     private final Main plugin;
     private Boolean cc;
-    
+
     public NBTBukkitListener(Main Main) {
         this.plugin = Main;
         try {
@@ -32,7 +30,7 @@ public class NBTBukkitListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInvClick(InventoryClickEvent event) {
-        if (cc && event.getInventory().getHolder() instanceof MenuInventoryHolder) return;
+        if (cc) return;
         if (event.getWhoClicked().getType() != EntityType.PLAYER) return;
         final Player p = (Player) event.getWhoClicked();
         if (event.getCurrentItem() == null) return;
@@ -41,7 +39,7 @@ public class NBTBukkitListener implements Listener {
             p.updateInventory();
         }
     }
-    
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onDrop(PlayerDropItemEvent event) {
         final Player p = event.getPlayer();
@@ -51,8 +49,8 @@ public class NBTBukkitListener implements Listener {
             p.updateInventory();
         }
     }
-    
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false) 
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void onSlotChange(PlayerItemHeldEvent event) {
         Player p = event.getPlayer();
         ItemStack stack = p.getInventory().getItem(event.getNewSlot());
@@ -61,12 +59,14 @@ public class NBTBukkitListener implements Listener {
             p.updateInventory();
         }
     }
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         for (ItemStack stack : event.getPlayer().getInventory().getContents()) {
             plugin.checkItem(stack, event.getPlayer());
         }
     }
+
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         NBTListener.cancel.invalidate(event.getPlayer());
